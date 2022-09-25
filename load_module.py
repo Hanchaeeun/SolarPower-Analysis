@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 # Loading PV Data in Jinju and Gangneung
-def load_PV(path):
+def Load_PV(path):
   file_list = os.listdir(path)
 
   result_df = pd.DataFrame()
@@ -17,8 +17,9 @@ def load_PV(path):
   result_df.drop(columns=['호기', '구분', '총량', '평균', '최대', '최소', '최대(시간별)', '최소(시간별)'], inplace=True)  
   return result_df
 
+
 # Loading PV Data in Jinju and Gangneung
-def load_PV_Mokpo(path):
+def Load_PV_Mokpo(path):
   file_list = os.listdir(path)
 
   result_df = pd.DataFrame()
@@ -36,8 +37,9 @@ def load_PV_Mokpo(path):
   result_df.drop(columns=' 계 ', inplace=True)
   return result_df
 
+
 # Loading ASOS Data
-def load_ASOS(path):
+def Load_ASOS(path):
   file_list = os.listdir(path)
   df = pd.DataFrame()
 
@@ -58,8 +60,9 @@ def load_ASOS(path):
   df.columns = col_rename 
   return df
 
+
 # Loading Particulate Data
-def load_PM(path, name, area):
+def Load_PM(path, name, area):
   file_list = os.listdir(path)
   PMdata = pd.DataFrame()
   for i in file_list:
