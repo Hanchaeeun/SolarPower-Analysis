@@ -26,11 +26,11 @@ def Correlation(area_df, cols, ax):
             vmin = -1,
             vmax = 1,
             ax = ax) 
-  
   ax.set_xticklabels(cols, rotation=-50, fontsize=12)
   ax.set_yticklabels(cols, fontsize=12) 
   return corr_df
   
+
 def Daymean_plot(area_df, col, ax, name='Monthly mean PV power'):
   # monthly
   day_list = area_df['Date'].unique()
@@ -59,6 +59,7 @@ def Daymean_plot(area_df, col, ax, name='Monthly mean PV power'):
   ax.spines['right'].set_visible(False)
   ax.spines['top'].set_visible(False)
 
+
 def Hourly_plot(area_df, col, ax, name='Hourly PV power'):
   for i in range(0, 24):
     globals()[f'h{i}'] = area_df[area_df['Time'] == i][f'{col}'].to_numpy(int)  
@@ -73,6 +74,7 @@ def Hourly_plot(area_df, col, ax, name='Hourly PV power'):
   ax.set_ylabel(f'{col}', fontsize=20, color='#696965', fontweight='semibold')
   ax.spines['right'].set_visible(False)
   ax.spines['top'].set_visible(False)
+
 
 def Monthly_plot(area_df, col, ax, name='Monthly plot'):
   for m in area_df['Month'].unique():
@@ -92,6 +94,7 @@ def Monthly_plot(area_df, col, ax, name='Monthly plot'):
   ax.spines['right'].set_visible(False)
   ax.spines['top'].set_visible(False)
 
+
 def Scatter(area_df, target, name):
   col_list = [x for x in area_df.columns if x not in ['Area', 'Date', 'Time', 'Month','Photovoltaics']]
   plt.figure(figsize=(20,14))
@@ -103,10 +106,9 @@ def Scatter(area_df, target, name):
     ax.set_ylabel(f'{col}') 
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
-
-  
   plt.suptitle(f'{name} Scatter Diagram', fontsize = 20, position=(0.5,0.92)) 
   plt.show()
+
 
 def NullPlot(data, title, ax):
   cols = [x for x in data.columns if x not in ['Area', 'Date', 'Time', 'Month']]
@@ -130,6 +132,7 @@ def NullPlot(data, title, ax):
     y = b.get_height()
     ax.text(x, y, y, ha='center', va='bottom', fontsize=13)
 
+
 # Total Hourly bar plot
 def TimeBar(df, title, ylim): 
   test_df = df.copy()
@@ -138,7 +141,6 @@ def TimeBar(df, title, ylim):
     time_df = test_df[test_df['Month'] == i] 
     sum_num = time_df['Time'].sum()
     dic[i] = sum_num
-
   time_list = dic.items()
   x, y = zip(*time_list)
 
@@ -175,14 +177,12 @@ def Plot_Result(pred_df, area_name, pred_cols):
     mn_list.append(mn)
   data = pd.DataFrame(mn_list)
   mn_df = pd.concat([mn_df, data], axis=1)
-
   # index month
   month = pd.to_datetime(mn_df['Date']).dt.month
   month_idx = [month[[0]].index] # 첫번째 달
   for m in month.unique():
     last = month[month == m].iloc[-1:].index
     month_idx.append(last)
-
   # plot 
   fig, ax = plt.subplots(figsize=(50,20))
   for col in pred_cols:
