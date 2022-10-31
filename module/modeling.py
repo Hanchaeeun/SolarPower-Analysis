@@ -13,6 +13,7 @@ import lightgbm as lgb
 from keras.layers import LSTM, GRU
 from sklearn.linear_model import LinearRegression
 from sklearn.neural_network import MLPRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
 from keras.models import Sequential
 
@@ -142,6 +143,32 @@ def MLTest(df, model, params_dic, score, shap_dic, dev=None):
   
   print(shap_model)
   return y_pred 
+
+def RF_importances(df, dev=True):
+  testmn, x_train, y_train, x_test, y_test = Make_DataSet(df, 'ML', dev)
+
+  # model fit
+  RF_model = RandomForestRegressor()
+  RF_model.fit(x_train, y_train.values.ravel())
+  # test
+  y_pred = RF_model.predict(x_test)
+
+  if dev is True:
+    y_pred = y_pred + testmn.squeeze()
+  # score
+  evs = explained_variance_score(y_true = y_test, y_pred = y_pred)
+  mape = mean_absolute_percentage_error(y_true = y_test, y_pred = y_pred)
+
+  importances = RF_model.feature_importances_
+
+  # sort values
+  imp = {}
+  for idx, i in enumerate(x_train.columns):
+    imp[i] = importances[idx]
+  sort_importances = dict(sorted(imp.items(), key=lambda x: x[1]))
+
+  print(f'explained varaiance : {evs}\n MAPE : {mape}')
+  return sort_importances
 
 ### inner Function 
 
