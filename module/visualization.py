@@ -6,6 +6,7 @@ from itertools import chain, combinations
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+
 def Correlation(area_df, cols, ax):
   data = area_df.copy()
   data = data[cols]
@@ -17,17 +18,19 @@ def Correlation(area_df, cols, ax):
   mask = mask[1:,:-1]
   corr_data = corr_df.iloc[1:,:-1]
 
-  sns.heatmap(corr_data, 
+  map = sns.heatmap(corr_data, 
             cmap = 'RdBu_r', 
-            annot = True,   
+            annot = True,
             mask = mask,
             linewidths = .5,
-            cbar_kws = {"shrink": .7}, 
+            annot_kws={'fontsize': 20},
+            cbar_kws = {"shrink": 1.0, 'ticks': [-1.00, -0.50, 0.00, 0.50, 1.00]},
             vmin = -1,
             vmax = 1,
-            ax = ax) 
-  ax.set_xticklabels(cols, rotation=-50, fontsize=12)
-  ax.set_yticklabels(cols, fontsize=12) 
+            ax = ax)
+  ax.set_xticklabels(cols[:-1], rotation=40, fontsize=20)
+  ax.set_yticklabels(cols[1:], rotation=0, fontsize=24)
+  ax.tick_params(axis='x', pad=2, width=2)
   return corr_df
   
 
