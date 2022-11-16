@@ -219,3 +219,18 @@ def Result_pred(df, pred_LR, pred_MLP, pred_LGBM, train_mean):
   result_df = pd.concat([result_df, pred_df], axis=1)
 
   return result_df
+
+def Result_RNN(df, y_test, pred_df, testmn, pred_cols):
+  df_test = pd.DataFrame(testmn)
+  df_PV =  pd.DataFrame(y_test)
+  data = pd.concat([df_PV, pred_df, df_test], axis=1)
+  data.columns = pred_cols
+
+  cols = ['Area','Date','Month','Time']
+  test_month = df['Date'].unique()[-1][:4]
+  result_df = df[df['Date'] >= f'{test_month}-01-01'][cols].reset_index(drop=True)
+  result_df = result_df[20:]
+  result_df.reset_index(inplace=True, drop=True)
+  result_df = pd.concat([result_df, data], axis=1)
+
+  return result_df
