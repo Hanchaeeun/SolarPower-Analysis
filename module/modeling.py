@@ -49,7 +49,8 @@ def FoldSet(df, train_idx, valid_idx, dev=None):
   # valid target
   y_valid = valid[['Photovoltaics']]
 
-  print(f'train: {x_train.shape}, {y_train.shape} valid: {x_valid.shape}, {y_valid.shape}\n')
+  if dev is True:
+    print(f'train: {x_train.shape}, {y_train.shape} valid: {x_valid.shape}, {y_valid.shape}\n')
   return validmn, x_train, y_train, x_valid, y_valid
 
 def GridSearch_ML(df, cols, params_dic, dev=None):
@@ -91,17 +92,26 @@ def GridSearch_ML(df, cols, params_dic, dev=None):
   return params_dic
 
 def MLTest(df, model, params_dic, score, shap_dic, dev=None):
+
+  model_list = {'LR': LinearRegression()}
+
   # tuning hyperparameter
   if dev is True:
-    parameter_MLP = params_dic[f'dev_MLP']
-    parameter_LGBM = params_dic[f'dev_LGBM']
+    if model == 'LGBM':
+      parameter_LGBM = params_dic[f'dev_LGBM']
+    elif model == 'MLP':
+      parameter_MLP = params_dic[f'dev_MLP']
+      model_list['MLP'] = MLPRegressor(**parameter_MLP)
+    else:
+      pass
   else :
-    parameter_MLP = params_dic[f'ori_MLP']
-    parameter_LGBM = params_dic[f'ori_LGBM']
-
-  model_list = {'LR': LinearRegression(),
-                'MLP': MLPRegressor(**parameter_MLP)
-                }    
+    if model == 'LGBM':
+      parameter_LGBM = params_dic[f'ori_LGBM']
+    elif model == 'MLP':
+      parameter_MLP = params_dic[f'ori_MLP']
+      model_list['MLP'] = MLPRegressor(**parameter_MLP)
+    else:
+      pass
   
   # train, test set
   cols = [x for x in df.columns if x not in ['Date','Area','Month','Time']]
