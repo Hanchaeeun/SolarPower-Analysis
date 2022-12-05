@@ -158,7 +158,8 @@ def Model_RNN(df, model_name, params, score, shap_dic, dev=None):
     X_train, X_valid = train_x[train_index, :, :], train_x[valid_index, :, :]
     Y_train, Y_valid = train_y[train_index, :], train_y[valid_index, :]
 
-    print(f'\ntrain_set : {X_train.shape}, valid_set : {X_valid.shape}')
+    if dev is True:
+      print(f'\ntrain_set : {X_train.shape}, valid_set : {X_valid.shape}')
     final_model.fit(X_train, Y_train, epochs=params[f'{dev_name}_{model_name}']['epochs'], batch_size=params[f'{dev_name}_{model_name}']['batch_size'], validation_split=0.2, verbose=0)
 
   # test

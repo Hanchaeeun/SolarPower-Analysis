@@ -178,7 +178,7 @@ def RF_importances(df, dev=True):
   sort_importances = dict(sorted(imp.items(), key=lambda x: x[1]))
 
   print(f'explained varaiance : {evs}\n MAPE : {mape}')
-  return sort_importances
+  return sort_importances, y_pred
 
 ### inner Function 
 
